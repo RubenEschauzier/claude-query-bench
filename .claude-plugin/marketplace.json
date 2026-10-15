@@ -1,0 +1,14 @@
+{
+  "name": "query-bench",
+  "description": "Marketplace for the query-bench plugin",
+  "owner": {
+    "name": "Ruben Eschauzier"
+  },
+  "plugins": [
+    {
+      "name": "query-bench",
+      "source": ".",
+      "description": "A/B tests, ablations and profiling of Comunica engine configs"
+    }
+  ]
+}

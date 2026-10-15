@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Runs bench.mts. Dependencies live at the repository (plugin) root, where Claude Code installs them for plugin
+# installs; for a plain clone they are installed on first use.
+set -euo pipefail
+SCRIPTS="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+ROOT="$(cd "$SCRIPTS/../../.." && pwd)"
+if ! node -e 'process.exit(process.features.typescript ? 0 : 1)' 2>/dev/null; then
+  echo "query-bench needs Node.js >= 22.18 (built-in TypeScript support), found $(node --version)" >&2
+  exit 1
+fi
+if [ ! -d "$ROOT/node_modules/sparql-benchmark-runner" ]; then
+  echo "Installing query-bench dependencies in $ROOT" >&2
+  npm ci --prefix "$ROOT" --omit=dev --no-audit --no-fund --silent >&2
+fi
+exec node "$SCRIPTS/bench.mts" "$@"

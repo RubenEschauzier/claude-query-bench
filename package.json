@@ -1,0 +1,20 @@
+{
+  "name": "query-bench",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A/B and ablation benchmarks of Comunica engine configs using sparql-benchmark-runner",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "sparql-benchmark-runner": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "query-bench",
+  "description": "A/B tests, ablations and profiling of Comunica engine configs: spawns a local SPARQL endpoint per config, runs queries with sparql-benchmark-runner and summarizes timings, result counts, HTTP requests and result hashes.",
+  "author": {
+    "name": "Ruben Eschauzier",
+    "email": "ruben.eschauzier@ugent.be"
+  },
+  "keywords": ["sparql", "comunica", "benchmark", "link-traversal"]
+}
