@@ -5,5 +5,12 @@
     "name": "Ruben Eschauzier",
     "email": "ruben.eschauzier@ugent.be"
   },
-  "keywords": ["sparql", "comunica", "benchmark", "link-traversal"]
+  "keywords": [
+    "sparql",
+    "comunica",
+    "benchmark",
+    "link-traversal"
+  ],
+  "repository": "https://github.com/RubenEschauzier/claude-query-bench",
+  "license": "MIT"
 }

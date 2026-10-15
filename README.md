@@ -18,7 +18,7 @@ It is for quick checks during development. Use [jbr](https://github.com/rubenswo
 In Claude Code:
 
 ```
-/plugin marketplace add <git URL or local path of this repository>
+/plugin marketplace add RubenEschauzier/claude-query-bench
 /plugin install query-bench@query-bench
 ```
 
@@ -42,3 +42,7 @@ skills/query-bench/scripts/bench \
 
 Run `skills/query-bench/scripts/bench --help` for all options. Data sources (e.g. a Solid server) are not started by
 the script; start them yourself first.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
