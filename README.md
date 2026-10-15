@@ -8,6 +8,9 @@ For every config, the skill's script starts a local Comunica SPARQL endpoint and
 time, last-arrival time, total time, result count and HTTP requests (median, geometric mean, mean), and compares
 result hashes across repetitions and configs.
 
+The skill has Claude delegate the analysis of larger runs to a cheap (Haiku) subagent. It passes the subagent the
+specific question it wants answered, so the full results stay out of the main session's context.
+
 It is for quick checks during development. Use [jbr](https://github.com/rubensworks/jbr.js) for full experiments.
 
 ## Install

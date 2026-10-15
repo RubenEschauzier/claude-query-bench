@@ -59,9 +59,52 @@ Output goes to `./output/bench/<timestamp>/` unless `--out` is given:
 - `raw.jsonl`: one line per execution, warmups included, with any extra endpoint metadata.
 - `logs/`: endpoint logs, one per endpoint start. Check these when a run fails or times out.
 
-When reporting to the user:
+### Analyzing with a cheap subagent
 
-- Show the summary table and give the path to the output directory.
+Unless the summary has only a handful of rows (then read `summary.txt` yourself; a subagent costs more), leave the
+results out of your own context and have a cheap subagent answer your question about them:
+
+1. Run the benchmark with `2>&1 | tail -3`, so you only see the output paths or the error, not the table.
+2. Before spawning the subagent, write down the question you want answered. Make it specific, e.g. "Does
+   `config-b` lower total time and HTTP requests compared to `config-a` on the discover queries, and do they return
+   the same results?" rather than "summarize the results".
+3. Spawn it with the Agent tool: `model: "haiku"`, `subagent_type: "general-purpose"`, and this prompt with the
+   placeholders filled in:
+
+   ```
+   You are analyzing the output of a SPARQL query benchmark. Answer the question below from the files; do not run
+   benchmarks or modify any files.
+
+   Question: <your question>
+   Context: <what is being compared and why, e.g. what differs between the configs>
+   Output directory: <absolute path>
+
+   Files:
+   - summary.json: per (config, query) row: runs, ok, timeouts, errors, and for firstArrival, lastArrival,
+     totalTime, results and httpRequests a {median, geomean, mean, n} object (times in ms); hashes maps result
+     hashes to counts; hashMismatch flags differing hashes across reps or configs. Also the run options.
+   - summary.txt: the same as a table.
+   - raw.jsonl: one line per execution (phase "warmup" or "measure"), for spread, outliers and partial results of
+     timed-out executions.
+   - logs/: endpoint logs; check them for the cause of errors or timeouts.
+
+   Rules:
+   - Compute ratios, differences and spreads with a tool (node -e or jq), not in your head.
+   - A difference is only meaningful if it is larger than the run-to-run spread in raw.jsonl; with fewer than
+     5 measured runs, say the evidence is weak.
+   - Always report timeouts, errors and hash mismatches, even when the question does not ask about them. A hash
+     mismatch between configs means they return different results.
+
+   Reply with: a direct answer to the question in 1-3 sentences; a compact table of only the rows and metrics that
+   support it; caveats (timeouts, errors, hash mismatches, low n, overlapping spread); and the output directory.
+   ```
+
+4. Relay the answer to the user with the output directory. If it contradicts your expectation or rests on few runs,
+   check the cited rows in `summary.txt` yourself before drawing conclusions.
+
+### Reporting to the user
+
+- Give the output directory and the summary table, or the relevant rows of it.
 - Point out any timeouts, errors and hash mismatches. A hash mismatch between configs means they return different
   results, which matters more than any speedup.
 - Do not call a difference real when it is within the run-to-run spread or rests on 1–2 reps; say so and suggest more
